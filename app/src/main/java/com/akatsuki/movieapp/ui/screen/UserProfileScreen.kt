@@ -11,6 +11,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,16 +25,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.akatsuki.movieapp.R
 import com.akatsuki.movieapp.ViewModel.UserViewModel
+import com.akatsuki.movieapp.ui.navigation.bottomNaviation.nav_items
 import com.akatsuki.movieapp.ui.theme.backgroundA
 import com.akatsuki.movieapp.ui.theme.btn
 
 
 @Composable
-fun UserProfileScreen(vm: UserViewModel){
+fun UserProfileScreen(vm: UserViewModel, nav: NavHostController){
     val _users = vm.userList.observeAsState()
     val users = _users.value?.last()
     
@@ -50,7 +53,9 @@ fun UserProfileScreen(vm: UserViewModel){
 
     if (exit.value){
         vm.deleteUser()
+        exit.value = !exit.value
     }
+
 
     Column(
         Modifier
@@ -81,7 +86,9 @@ fun UserProfileScreen(vm: UserViewModel){
         
         Spacer(modifier = Modifier.height(60.dp))
 
-        Button(onClick = {save.value = true},modifier = Modifier
+        Button(onClick = {
+            nav.navigate(nav_items.Fav.screen_route)
+        },modifier = Modifier
             .height(40.dp)
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(10.dp))

@@ -5,6 +5,7 @@ import com.akatsuki.movieapp.utils.Resource
 
 import com.akatsuki.movieapp.data.local.UserDao
 import com.akatsuki.movieapp.data.remote.InterfaceApi
+import com.akatsuki.movieapp.models.local.SaveModel
 import com.akatsuki.movieapp.models.local.UsersModel
 import com.akatsuki.movieapp.models.remote.Ranked.RankedClass
 import com.akatsuki.movieapp.models.remote.Response.Data
@@ -59,9 +60,32 @@ class DataRepository @Inject constructor(
     }
 
 
-    //
+    //fav data
+
+    fun getAllFav(): Flow<List<SaveModel>> = dao.getallfav()
+        .flowOn(Dispatchers.Main)
+        .conflate()
+
+    suspend fun deleteFav(id: Int) {
+        dao.deleteFav(id)
+    }
 
 
+    fun getFav(id: Int) = dao.getFavById(id)
+
+    suspend fun addfav(saveModel: SaveModel) {
+        dao.saveFav(
+            SaveModel(
+                id = saveModel.id,
+                title = saveModel.title,
+                poster = saveModel.poster,
+                imdb = saveModel.imdb,
+                year = saveModel.year,
+                country = saveModel.country
+            )
+
+        )
+    }
 
 
 

@@ -33,6 +33,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Lifecycling
+import androidx.lifecycle.asFlow
 import androidx.navigation.NavHostController
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -40,7 +43,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.akatsuki.movieapp.ViewModel.FavViewModel
 import com.akatsuki.movieapp.ViewModel.RankViewModel
+import com.akatsuki.movieapp.models.local.SaveModel
+import com.akatsuki.movieapp.models.local.UsersModel
 import com.akatsuki.movieapp.models.remote.Ranked.Data
 import com.akatsuki.movieapp.ui.components.ShimmerRanked
 import com.akatsuki.movieapp.ui.navigation.bottomNaviation.nav_items
@@ -53,31 +59,17 @@ import kotlinx.coroutines.flow.Flow
 
 @ExperimentalComposeUiApi
 @Composable
-fun RankingScreen(vm: RankViewModel, nav: NavHostController){
+fun FavScreen(vm: FavViewModel, nav: NavHostController){
 
-    if (!vm.loading.value){
-        ShimmerRanked()
-        LaunchedEffect(key1 = Unit){
-            delay(1000)
-            vm.loading.value = true
-        }
-    }else{
-        RankingScreenSmall(vm = vm, nav)
-    }
+    FaveScreenSmall(vm = vm, nav = nav)
 
 }
 
 @ExperimentalComposeUiApi
 @Composable
-fun RankingScreenSmall(vm: RankViewModel, nav: NavHostController){
+fun FaveScreenSmall(vm: FavViewModel, nav: NavHostController){
 
-    
-    Log.e("value", vm.loading.value.toString())
-    val res = vm.result.value
 
-    val query: MutableState<String> = remember { mutableStateOf("") }
-
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = Modifier
@@ -92,7 +84,7 @@ fun RankingScreenSmall(vm: RankViewModel, nav: NavHostController){
                 .wrapContentHeight()
         ) {
             Text(
-                text = "Ranking Movies",
+                text = "Favorite Movies",
                 color = Color.White,
                 fontSize = 22.sp,
                 style = MaterialTheme.typography.h1,
@@ -103,58 +95,26 @@ fun RankingScreenSmall(vm: RankViewModel, nav: NavHostController){
 
 
             Spacer(modifier = Modifier.width(20.dp))
-            TextField(
-                modifier = Modifier
-                    .width(200.dp)
-                    .padding(8.dp),
-                value = query.value,
-                onValueChange = { query.value = it
-                                vm.getSearch(query.value)},
-                label = { Text(text = "Search") },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done,
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        vm.getSearch(query.value)
-                        keyboardController?.hide() // another way to close keyboard
-                    },
-                ),
-                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
-                textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = MaterialTheme.colors.surface),
-            )
-
 
         }
+        Log.e("sis", "sis")
+
 
         Spacer(modifier = Modifier.height(40.dp))
+        val _res = vm.favList.observeAsState()
+        val res = _res.value
+        Log.e("sis", res?.last()?.poster.toString())
+
+        Log.e("sis", res?.size.toString())
         if (res.isNullOrEmpty()) {
-            val response: Flow<PagingData<Data>> = vm.response
-            val datalist: LazyPagingItems<Data> = response.collectAsLazyPagingItems()
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                items(datalist) { item ->
-                    Rankitem(item!!, nav = nav)
-
-                }
-
-            }
+            Text(text = "empty list", modifier = Modifier.align(alignment = Alignment.CenterHorizontally), color = Color.White, fontSize = 40.sp)
         } else {
-            /*vm.getSearch()
-            val data = vm.result.observeAsState()
-            val datalist = data.value?.data!!
-
-             */
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 items(res) { item ->
-                    Rankitem(item, nav)
+                    Favitem(item, nav)
 
                 }
 
@@ -165,7 +125,7 @@ fun RankingScreenSmall(vm: RankViewModel, nav: NavHostController){
 
 
 @Composable
-internal fun Rankitem(item: Data, nav: NavHostController){
+internal fun Favitem(item: SaveModel, nav: NavHostController){
     val id = item.id
     Spacer(modifier = Modifier.height(25.dp))
     Box(modifier = Modifier
@@ -182,8 +142,8 @@ internal fun Rankitem(item: Data, nav: NavHostController){
                 .background(color = tb, shape = RoundedCornerShape(9.dp))
                 .clickable(true, onClick = {
                     Log.e("clicke rank", "true")
-                    nav.navigate(nav_items.Detail.screen_route.plus("/$id")){
-                        popUpTo(nav_items.Ranked.screen_route){
+                    nav.navigate(nav_items.Detail.screen_route.plus("/$id")) {
+                        popUpTo(nav_items.Ranked.screen_route) {
                             inclusive = true
                         }
                     }
@@ -212,7 +172,7 @@ internal fun Rankitem(item: Data, nav: NavHostController){
 
                 Text(text = "Imdb:", color = Color.White, fontSize = 13.sp, style = MaterialTheme.typography.h2
                     ,modifier = Modifier.padding(start = 10.dp))
-                Text(text = item.imdbRating.toString(), color = Color.Yellow, fontSize = 15.sp, style = MaterialTheme.typography.subtitle1
+                Text(text = item.imdb.toString(), color = Color.Yellow, fontSize = 15.sp, style = MaterialTheme.typography.subtitle1
                     ,modifier = Modifier.padding(start = 7.dp))
             }
 

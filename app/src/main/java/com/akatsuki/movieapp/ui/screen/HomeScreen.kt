@@ -27,6 +27,7 @@ import com.akatsuki.movieapp.models.remote.TopResponse.Result
 import com.akatsuki.movieapp.ui.components.ShimmerHome
 import com.akatsuki.movieapp.ui.theme.backgroundA
 import com.akatsuki.movieapp.ui.theme.tb
+import com.akatsuki.movieapp.utils.Base.TOP_URL
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -40,7 +41,7 @@ import kotlinx.coroutines.delay
 fun HomeScreen(vm: ApiHomeViewModel) {
 
 
-
+    //ust for showing shimmer effect
     if (!vm.loading.value) {
         ShimmerHome()
         LaunchedEffect(key1 = Unit){
@@ -58,12 +59,6 @@ fun HomeScreen(vm: ApiHomeViewModel) {
 @Composable
 fun HomeScreenShow(vm: ApiHomeViewModel){
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-
-
-
-
 
 
 
@@ -73,7 +68,9 @@ fun HomeScreenShow(vm: ApiHomeViewModel){
     vm.getPop(24)
     val pop = vm.popresult.value
 
-    vm.getTop("https://bumsun.ir/movie/top.json")
+
+    //i will add some
+    vm.getTop(TOP_URL)
     val top = vm.Topresult.value
 
 
@@ -159,7 +156,6 @@ fun HomeScreenShow(vm: ApiHomeViewModel){
 
 
         if (!pop.isNullOrEmpty()){
-            //val itemss: List<Data> = pop?.data!!
             LazyRow(modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()){
@@ -175,21 +171,21 @@ fun HomeScreenShow(vm: ApiHomeViewModel){
 
                         AsyncImage(
                             model = req,
-                            contentDescription = "profile ima ge",
+                            contentDescription = "POP POSTERS",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp)
                         )
 
-                        Text(text = "The Shawshank Redemption", color = Color.White, fontSize = 14.sp, style = MaterialTheme.typography.h2
+                        Text(text = item.title.toString(), color = Color.White, fontSize = 14.sp, style = MaterialTheme.typography.h2
                             ,modifier = Modifier.padding(start = 10.dp))
                         Spacer(modifier = Modifier.height(4.dp))
 
                         Row() {
                             Text(text = "Imdb:", color = Color.White, fontSize = 13.sp, style = MaterialTheme.typography.h2
                                 ,modifier = Modifier.padding(start = 10.dp))
-                            Text(text = "9.0", color = Color.Yellow, fontSize = 15.sp, style = MaterialTheme.typography.subtitle1
+                            Text(text = item.imdbRating.toString(), color = Color.Yellow, fontSize = 15.sp, style = MaterialTheme.typography.subtitle1
                                 ,modifier = Modifier.padding(start = 7.dp))
                         }
                     }
@@ -226,7 +222,7 @@ fun HomeScreenShow(vm: ApiHomeViewModel){
 
                         AsyncImage(
                             model = req,
-                            contentDescription = "profile ima ge",
+                            contentDescription = "updated poster",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -234,7 +230,7 @@ fun HomeScreenShow(vm: ApiHomeViewModel){
                         )
 
                         Text(
-                            text = "The Godfather",
+                            text = item.title.toString(),
                             color = Color.White,
                             fontSize = 14.sp,
                             style = MaterialTheme.typography.h2,
@@ -253,7 +249,7 @@ fun HomeScreenShow(vm: ApiHomeViewModel){
                                 modifier = Modifier.padding(start = 10.dp)
                             )
                             Text(
-                                text = "9.2",
+                                text = item.imdbRating.toString(),
                                 color = Color.Yellow,
                                 fontSize = 15.sp,
                                 style = MaterialTheme.typography.subtitle1,

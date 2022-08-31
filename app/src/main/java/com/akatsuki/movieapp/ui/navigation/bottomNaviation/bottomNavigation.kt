@@ -31,6 +31,7 @@ fun bottomNavigation(navController: NavController) {
         nav_items.Home,
         nav_items.Profile,
         nav_items.Ranked,
+        nav_items.Fav
 
     )
     CompositionLocalProvider(

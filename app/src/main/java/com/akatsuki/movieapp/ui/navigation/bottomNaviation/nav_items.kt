@@ -11,11 +11,15 @@ sealed class nav_items(var title:String, var icon: Int, var screen_route:String)
 
 
     object Login: nav_items("Login", R.drawable.rank, "login")
-    object User: nav_items("User", R.drawable.rank, "user")
+    //object User: nav_items("User", R.drawable.rank, "user")
 
     object Detail: nav_items("Detail", R.drawable.rank, "detail")
 
     object Main: nav_items("Main", R.drawable.rank, "main")
+
+
+    object Fav: nav_items("Fav", R.drawable.rank, "fav")
+
 
 
 }
