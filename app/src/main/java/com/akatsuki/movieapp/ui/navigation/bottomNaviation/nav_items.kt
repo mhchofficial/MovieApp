@@ -18,7 +18,7 @@ sealed class nav_items(var title:String, var icon: Int, var screen_route:String)
     object Main: nav_items("Main", R.drawable.rank, "main")
 
 
-    object Fav: nav_items("Fav", R.drawable.rank, "fav")
+    object Fav: nav_items("Fav", R.drawable.love, "fav")
 
 
 

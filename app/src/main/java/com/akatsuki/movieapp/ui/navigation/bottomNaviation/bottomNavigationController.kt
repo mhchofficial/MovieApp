@@ -48,7 +48,7 @@ fun BottomNaviationController(navController: NavHostController, vm: ApiHomeViewM
             if (!users.value.isNullOrEmpty()){
                 isLogin.value = true
             }
-            HomeScreen(vm)
+            HomeScreen(vm, navController)
         }
 
         composable(nav_items.Ranked.screen_route) {

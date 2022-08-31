@@ -1,8 +1,10 @@
 package com.akatsuki.movieapp.ui.screen
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -19,12 +21,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.akatsuki.movieapp.ViewModel.ApiHomeViewModel
 import com.akatsuki.movieapp.models.remote.TopResponse.Result
 import com.akatsuki.movieapp.ui.components.ShimmerHome
+import com.akatsuki.movieapp.ui.navigation.bottomNaviation.nav_items
 import com.akatsuki.movieapp.ui.theme.backgroundA
 import com.akatsuki.movieapp.ui.theme.tb
 import com.akatsuki.movieapp.utils.Base.TOP_URL
@@ -38,7 +42,7 @@ import kotlinx.coroutines.delay
 @RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen(vm: ApiHomeViewModel) {
+fun HomeScreen(vm: ApiHomeViewModel, nav: NavHostController) {
 
 
     //ust for showing shimmer effect
@@ -50,14 +54,14 @@ fun HomeScreen(vm: ApiHomeViewModel) {
         }
     }
     else{
-        HomeScreenShow(vm = vm)
+        HomeScreenShow(vm = vm, nav)
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.R)
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreenShow(vm: ApiHomeViewModel){
+fun HomeScreenShow(vm: ApiHomeViewModel, nav: NavHostController){
 
 
 
@@ -103,6 +107,7 @@ fun HomeScreenShow(vm: ApiHomeViewModel){
         .fillMaxSize()
         .verticalScroll(scrollState)
         .background(color = backgroundA)
+        .padding(bottom = 70.dp)
 
     ) {
 
@@ -163,7 +168,15 @@ fun HomeScreenShow(vm: ApiHomeViewModel){
                     Column(modifier = Modifier
                         .width(140.dp)
                         .height(255.dp)
+                        .clickable(true, onClick = {
+                            nav.navigate(nav_items.Detail.screen_route.plus("/${item.id}")) {
+                                popUpTo(nav_items.Home.screen_route) {
+                                    inclusive = true
+                                }
+                            }
+                        })
                         .padding(start = 10.dp, end = 10.dp)) {
+
                         val urlp = item.poster?.replace("http://", "https://")
                         val req = ImageRequest.Builder(context = LocalContext.current)
                             .data(urlp)
@@ -188,6 +201,8 @@ fun HomeScreenShow(vm: ApiHomeViewModel){
                             Text(text = item.imdbRating.toString(), color = Color.Yellow, fontSize = 15.sp, style = MaterialTheme.typography.subtitle1
                                 ,modifier = Modifier.padding(start = 7.dp))
                         }
+
+
                     }
 
 
@@ -202,18 +217,24 @@ fun HomeScreenShow(vm: ApiHomeViewModel){
 
         Spacer(modifier = Modifier.height(10.dp))
 
+
         if (!up.isNullOrEmpty()){
-            //val itemsP: List<Data> = up?.data!!
             LazyRow(modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()) {
                 itemsIndexed(up) { i, item ->
-
                     Column(
                         modifier = Modifier
                             .width(140.dp)
                             .height(255.dp)
                             .padding(start = 10.dp, end = 10.dp)
+                            .clickable(true, onClick = {
+                                nav.navigate(nav_items.Detail.screen_route.plus("/${item.id}")) {
+                                    popUpTo(nav_items.Home.screen_route) {
+                                        inclusive = true
+                                    }
+                                }
+                            })
                     ) {
                         val url = item.poster?.replace("http://", "https://")
                         val req = ImageRequest.Builder(context = LocalContext.current)
