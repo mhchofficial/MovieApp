@@ -22,6 +22,7 @@ import com.akatsuki.movieapp.ui.navigation.bottomNaviation.nav_items
 import com.akatsuki.movieapp.ui.theme.backgroundA
 import com.akatsuki.movieapp.ui.theme.backgroundC
 import com.akatsuki.movieapp.ui.theme.btn
+import com.akatsuki.movieapp.utils.Base.LOGIN_URL
 
 
 @Composable
@@ -44,7 +45,7 @@ fun UserLoginScreen(vm: UserViewModel, nav: NavHostController){
 
     if (click.value){
         load.value = true
-        vm.getLogin("https://bumsun.ir/movie/login.json")
+        vm.getLogin(LOGIN_URL)
         val _result = vm.result.observeAsState()
         val result = _result.value
 

@@ -1,6 +1,5 @@
 package com.akatsuki.movieapp.repository
 
-import android.content.Context
 import com.akatsuki.movieapp.utils.Resource
 
 import com.akatsuki.movieapp.data.local.UserDao
@@ -8,17 +7,14 @@ import com.akatsuki.movieapp.data.remote.InterfaceApi
 import com.akatsuki.movieapp.models.local.SaveModel
 import com.akatsuki.movieapp.models.local.UsersModel
 import com.akatsuki.movieapp.models.remote.Ranked.RankedClass
-import com.akatsuki.movieapp.models.remote.Response.Data
 import com.akatsuki.movieapp.models.remote.Response.ResponseClass
 import com.akatsuki.movieapp.models.remote.TopResponse.TopResponse
 import com.akatsuki.movieapp.models.remote.detail.DetailResponse
 import com.akatsuki.movieapp.models.remote.login.LoginResponse
 import com.akatsuki.movieapp.utils.Resource.*
-import com.akatsuki.movieapp.utils.alert_error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
