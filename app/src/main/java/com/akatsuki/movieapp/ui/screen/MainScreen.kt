@@ -9,7 +9,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.akatsuki.movieapp.ViewModel.*
 import com.akatsuki.movieapp.ui.navigation.bottomNaviation.BottomNaviationController
-import com.example.compose_ui.navigation.bottomNaviation.bottomNavigation
+import com.akatsuki.movieapp.ui.navigation.bottomNaviation.BottomNavigation
 
 @ExperimentalComposeUiApi
 @RequiresApi(Build.VERSION_CODES.R)
@@ -18,7 +18,7 @@ fun MainScreen(vm: ApiHomeViewModel = viewModel(), rankViewModel: RankViewModel 
     val navController = rememberNavController()
 
     Scaffold(
-        bottomBar = { bottomNavigation(navController = navController) }
+        bottomBar = { BottomNavigation(navController = navController) }
     ) {
         BottomNaviationController(navController = navController, vm = vm, rankViewModel = rankViewModel, userViewModel = userViewModel, detailViewModel = detailViewModel, favViewModel = favViewModel)
 

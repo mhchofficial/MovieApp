@@ -38,7 +38,7 @@ fun BottomNaviationController(navController: NavHostController, vm: ApiHomeViewM
             }
             else{
                 Log.e("login", "page")
-                UserLoginScreen(userViewModel)
+                UserLoginScreen(userViewModel, navController)
 
             }
             //UsersStateScreen(vm = userViewModel, navController)
