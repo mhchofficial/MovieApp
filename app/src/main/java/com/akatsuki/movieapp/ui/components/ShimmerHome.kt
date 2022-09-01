@@ -27,9 +27,9 @@ fun ShimmerHome() {
 
 
     val shimmerColors = listOf(
-        Color.LightGray.copy(alpha = 0.6f),
-        Color.LightGray.copy(alpha = 0.2f),
-        Color.LightGray.copy(alpha = 0.6f),
+        Color.Gray.copy(alpha = 0.9f),
+        Color.Gray.copy(alpha = 0.2f),
+        Color.Gray.copy(alpha = 0.9f),
     )
     val transition = rememberInfiniteTransition()
     val translateAnim = transition.animateFloat(
@@ -139,9 +139,9 @@ fun ShimmerGridItemPreview() {
     ShimmerGridItem(
         brush = Brush.linearGradient(
             listOf(
-                Color.LightGray.copy(alpha = 0.6f),
-                Color.LightGray.copy(alpha = 0.2f),
-                Color.LightGray.copy(alpha = 0.6f),
+                Color.White.copy(alpha = 0.9f),
+                Color.White.copy(alpha = 0.2f),
+                Color.White.copy(alpha = 0.9f)
             )
         )
     )
@@ -153,9 +153,9 @@ fun ShimmerGridItemDarkPreview() {
     ShimmerGridItem(
         brush = Brush.linearGradient(
             listOf(
-                Color.LightGray.copy(alpha = 0.6f),
-                Color.LightGray.copy(alpha = 0.2f),
-                Color.LightGray.copy(alpha = 0.6f),
+                Color.White.copy(alpha = 0.9f),
+                Color.White.copy(alpha = 0.2f),
+                Color.White.copy(alpha = 0.9f)
             )
         )
     )

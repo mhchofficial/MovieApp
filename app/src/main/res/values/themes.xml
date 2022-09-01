@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.MovieApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/backround</item>
+        <item name="android:statusBarColor">@color/backround</item>
+        <item name="android:background">@color/backround</item>
         <item name="android:windowBackground">@color/backround</item>
 
     </style>

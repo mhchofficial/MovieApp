@@ -30,7 +30,6 @@ class MainActivity : ComponentActivity() {
                     
                 }
                 AppNavigation()
-                //ShimmerRanked()
 
             }
         }

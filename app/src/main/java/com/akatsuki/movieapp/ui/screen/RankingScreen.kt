@@ -33,6 +33,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -40,6 +42,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.akatsuki.movieapp.ViewModel.ApiHomeViewModel
 import com.akatsuki.movieapp.ViewModel.RankViewModel
 import com.akatsuki.movieapp.models.remote.Ranked.Data
 import com.akatsuki.movieapp.ui.components.ShimmerRanked
@@ -47,37 +50,38 @@ import com.akatsuki.movieapp.ui.navigation.bottomNaviation.nav_items
 import com.akatsuki.movieapp.ui.theme.backgroundA
 import com.akatsuki.movieapp.ui.theme.backgroundC
 import com.akatsuki.movieapp.ui.theme.tb
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 
 
 @ExperimentalComposeUiApi
 @Composable
-fun RankingScreen(vm: RankViewModel, nav: NavHostController){
-
+fun RankingScreen(nav: NavHostController, vm: RankViewModel){
     if (!vm.loading.value){
         ShimmerRanked()
-        LaunchedEffect(key1 = Unit){
-            delay(1000)
+        LaunchedEffect(Unit){
+            delay(2000)
             vm.loading.value = true
         }
     }else{
-        RankingScreenSmall(vm = vm, nav)
+
+        RankingScreenSmall(vm = vm, nav = nav)
     }
+
+
 
 }
 
 @ExperimentalComposeUiApi
 @Composable
 fun RankingScreenSmall(vm: RankViewModel, nav: NavHostController){
-
-    
-    Log.e("value", vm.loading.value.toString())
-    val res = vm.result.value
-
     val query: MutableState<String> = remember { mutableStateOf("") }
-
     val keyboardController = LocalSoftwareKeyboardController.current
+
+
+    val response: Flow<PagingData<Data>> = vm.response
+    val datalist: LazyPagingItems<Data> = response.collectAsLazyPagingItems()
 
     Column(
         modifier = Modifier
@@ -85,6 +89,9 @@ fun RankingScreenSmall(vm: RankViewModel, nav: NavHostController){
             .background(color = backgroundA)
 
     ) {
+        val res = vm.result.value
+
+
         Spacer(modifier = Modifier.height(10.dp))
         Row(
             modifier = Modifier
@@ -131,8 +138,7 @@ fun RankingScreenSmall(vm: RankViewModel, nav: NavHostController){
 
         Spacer(modifier = Modifier.height(40.dp))
         if (res.isNullOrEmpty()) {
-            val response: Flow<PagingData<Data>> = vm.response
-            val datalist: LazyPagingItems<Data> = response.collectAsLazyPagingItems()
+
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -182,8 +188,8 @@ internal fun Rankitem(item: Data, nav: NavHostController){
                 .background(color = tb, shape = RoundedCornerShape(9.dp))
                 .clickable(true, onClick = {
                     Log.e("clicke rank", "true")
-                    nav.navigate(nav_items.Detail.screen_route.plus("/$id")){
-                        popUpTo(nav_items.Ranked.screen_route){
+                    nav.navigate(nav_items.Detail.screen_route.plus("/$id")) {
+                        popUpTo(nav_items.Ranked.screen_route) {
                             inclusive = true
                         }
                     }

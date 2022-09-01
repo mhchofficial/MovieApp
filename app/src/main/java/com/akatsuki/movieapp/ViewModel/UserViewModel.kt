@@ -41,7 +41,6 @@ class UserViewModel @Inject constructor(
             repository.deleteusers()
         }
     }
-
     var _result: MutableLiveData<LoginResponse> = MutableLiveData()
     val result: LiveData<LoginResponse> = _result
     val loading = mutableStateOf(false)

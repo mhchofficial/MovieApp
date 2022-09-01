@@ -3,11 +3,14 @@ package com.akatsuki.movieapp.ui.navigation.bottomNaviation
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,14 +18,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.akatsuki.movieapp.ViewModel.*
 import com.akatsuki.movieapp.ui.screen.*
+import com.akatsuki.movieapp.ui.theme.backgroundA
 import com.google.gson.Gson
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @ExperimentalComposeUiApi
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 fun BottomNaviationController(navController: NavHostController, vm: ApiHomeViewModel, rankViewModel: RankViewModel, userViewModel: UserViewModel, detailViewModel: DetailViewModel, favViewModel: FavViewModel) {
-    NavHost(navController, startDestination = nav_items.Home.screen_route) {
+    NavHost(navController, startDestination = nav_items.Home.screen_route,
+        modifier = Modifier.background(color = backgroundA)
+
+    ) {
         //i use this for increase speed for checking
         //and normally we can do tis in profile screen but the speed of checking will be decreased
         val isLogin = mutableStateOf(false)
@@ -52,7 +60,7 @@ fun BottomNaviationController(navController: NavHostController, vm: ApiHomeViewM
         }
 
         composable(nav_items.Ranked.screen_route) {
-            RankingScreen(rankViewModel, navController)
+            RankingScreen(navController, rankViewModel)
         }
 
 
