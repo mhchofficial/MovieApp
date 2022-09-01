@@ -1,4 +1,4 @@
-package com.example.compose_ui.navigation.bottomNaviation
+package com.akatsuki.movieapp.ui.navigation.bottomNaviation
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,15 +18,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.akatsuki.movieapp.ui.navigation.bottomNaviation.nav_items
 import com.akatsuki.movieapp.ui.theme.ClearRippleTheme
 import com.akatsuki.movieapp.ui.theme.btn
-import com.akatsuki.movieapp.ui.theme.selected
 import com.akatsuki.movieapp.ui.theme.tb
 
 
 @Composable
-fun bottomNavigation(navController: NavController) {
+fun BottomNavigation(navController: NavController) {
     val items = listOf(
         nav_items.Home,
         nav_items.Profile,

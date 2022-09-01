@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.akatsuki.movieapp.ViewModel.UserViewModel
 import com.akatsuki.movieapp.models.local.UsersModel
 import com.akatsuki.movieapp.ui.navigation.bottomNaviation.nav_items
@@ -24,7 +25,7 @@ import com.akatsuki.movieapp.ui.theme.btn
 
 
 @Composable
-fun UserLoginScreen(vm: UserViewModel){
+fun UserLoginScreen(vm: UserViewModel, nav: NavHostController){
     val email = remember {
         mutableStateOf("")
     }
@@ -48,14 +49,15 @@ fun UserLoginScreen(vm: UserViewModel){
         val result = _result.value
 
         if (result != null){
-
-            Log.e("data", result.toString())
-            Log.e("data", result.fullname.toString())
-            Log.e("data", result.image.toString())
-
             val uitem = UsersModel(1, result.fullname.toString(), result.username.toString(), result.image.toString(), result.session.toString())
             vm.addUser(item = uitem)
             load.value = false
+
+            nav.navigate(nav_items.Home.screen_route){
+                popUpTo(nav_items.Login.screen_route){
+                    inclusive = true
+                }
+            }
 
         }
 

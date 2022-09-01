@@ -122,7 +122,7 @@ fun HomeScreenShow(vm: ApiHomeViewModel, nav: NavHostController){
 
 
             HorizontalPager(
-                count = top?.size!!,
+                count = top.size,
                 state = pagerState,
                 contentPadding = PaddingValues(horizontal = 12.dp),
                 modifier = Modifier
@@ -138,7 +138,7 @@ fun HomeScreenShow(vm: ApiHomeViewModel, nav: NavHostController){
                         .padding(top = 20.dp)
                         .padding(horizontal = 50.dp)
                         .aspectRatio(1f),
-                    top = top!!
+                    top = top
                 )
             }
         }

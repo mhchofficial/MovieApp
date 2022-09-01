@@ -201,7 +201,7 @@ internal fun Favitem(item: SaveModel, nav: NavHostController){
         }
 
 
-        val imgu = item.poster?.replace("http://", "https://").toString()
+        val imgu = item.poster.replace("http://", "https://").toString()
         val req = ImageRequest.Builder(context = LocalContext.current)
             .data(imgu)
             .build()
